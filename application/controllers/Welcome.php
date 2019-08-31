@@ -15,12 +15,16 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+
 			return;
 		}
 
 //		调用模型
 		$this->load->model('Migration');
-		$result = $this->Migration->articleList($catId);
+		$count = $this->Migration->articleList($catId, null);  // 文章总数量
+		$data = $this->Migration->articlePage($count,$page, $catId);  // 分页数量
+		$result = $data['result'];
+		$pageNum = $data['pageNum'];
 
 		if (!$result) {
 			$err = array(
@@ -29,13 +33,9 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+
 			return;
 		}
-
-//		文章数量
-//		$count = count($result);
-//		echo $count;
-
 
 		foreach ($result as $key => $value) {
 			unset(
@@ -55,26 +55,10 @@ class Welcome extends CI_Controller
 		}
 
 		$data['result'] = $result;
+		$data['pageNum'] = $pageNum;
+		$data['catId'] = $catId;
 		$this->load->view('welcome', $data);
-//		分页数，10行为一页
-//		if ($count > 10) {
-//			$pages = ceil($count / 10);
-//		} else {
-//			$pages = 1;
-//		};
 
-//		$query  = $this->db->get('news', 10, ($page - 1) * 10);
-//		if ($query) {
-//			$result = $query->result();
-//			$data = array();
-//			foreach ($data as $key => $value) {
-//
-//			}
-//		}
-//		$data = array();
-//		for ($i = 0; $i < sizeof($result1); ++$i) {
-//
-//		};
 
 	}
 
@@ -90,6 +74,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+
 			return;
 		};
 
@@ -104,6 +89,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+
 			return;
 		}
 
@@ -132,16 +118,15 @@ class Welcome extends CI_Controller
 		$this->load->model('Migration');
 		$result2 = $this->Migration->articleList(null, $id);
 
-		$info             = array();
-		$info['id']       = $result[0]->id;  // 文章主键
-		$info['title']    = $result2[0]->title;  // 文章主键
-		$info['content']  = $result[0]->content;  // 文章内容
-		$info['copyFrom'] = $copyFrom;  // 文章来源
-		$info['author']   = $result[0]->author;  // 文章作者
-		$info['editor']   = $result[0]->editor;  // 文章责编
-		$info['time']     = date('Y-m-d H:i:s', $result2[0]->updatetime);  // 文章发布时间
+		$data['id']       = $result[0]->id;  // 文章主键
+		$data['title']    = $result2[0]->title;  // 文章主键
+		$data['content']  = $result[0]->content;  // 文章内容
+		$data['copyFrom'] = $copyFrom;  // 文章来源
+		$data['author']   = $result[0]->author;  // 文章作者
+		$data['editor']   = $result[0]->editor;  // 文章责编
+		$data['time']     = date('Y-m-d H:i:s',
+			$result2[0]->updatetime);  // 文章发布时间
 
-		$data['info'] = $info;
 		$this->load->view('article', $data);
 	}
 }

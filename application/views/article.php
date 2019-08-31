@@ -12,14 +12,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div id="container">
 	<h1>
-		<?= $info['title']; ?>
+		<?= $title; ?>
 	</h1>
-	<span id="time">发布时间：<?= $info['time']; ?></span>
-	<span id="copyfrom">来源：<?= $info['copyFrom']; ?></span>
-	<span id="author">作者：<?= $info['author']; ?></span>
+	<span id="time">发布时间：<?= $time; ?></span>
+	<span id="copyfrom">来源：<?= $copyFrom; ?></span>
+	<span id="author">作者：<?= $author; ?></span>
 	<p id="content">
-		<?= $info['content']; ?>
-		<span style="float: right; padding: 50px 50px 50px 0;">责编：<?= $info['editor']; ?></span>
+		<?= $content; ?>
+		<span style="float: right; padding: 50px 50px 50px 0;">
+			责编：<?= $editor; ?>
+		</span>
 	</p>
 </div>
 

@@ -24,6 +24,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</li>
 		<?php endforeach; ?>
 	</ul>
+
+	<div id="page">
+		<?php for ($i = 1; $i <= $pageNum; ++$i) : ?>
+			<a href="http://localhost/2019-migration/index.php/list?catId=<?= $catId ?>&page=<?= $i ?>">
+				<?= $i ?>
+			</a>
+		<?php endfor; ?>
+	</div>
 </div>
 
 </body>
