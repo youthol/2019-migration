@@ -3,23 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller
 {
-
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 *        http://example.com/index.php/welcome
-	 *    - or -
-	 *        http://example.com/index.php/welcome/index
-	 *    - or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 *
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 	public function index()
 	{
 		$catId = $_GET['catId'];  // 文章类型
@@ -32,6 +15,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+			return;
 		}
 
 //		调用模型
@@ -45,6 +29,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+			return;
 		}
 
 //		文章数量
@@ -105,6 +90,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+			return;
 		};
 
 //		调用模型
@@ -118,6 +104,7 @@ class Welcome extends CI_Controller
 			);
 			set_status_header(404);
 			echo json_encode($err);
+			return;
 		}
 
 //		加载模型
@@ -141,14 +128,19 @@ class Welcome extends CI_Controller
 			$copyFrom = '未知';
 		};
 
+//		调用模型
+		$this->load->model('Migration');
+		$result2 = $this->Migration->articleList(null, $id);
+
 		$info             = array();
 		$info['id']       = $result[0]->id;  // 文章主键
+		$info['title']    = $result2[0]->title;  // 文章主键
 		$info['content']  = $result[0]->content;  // 文章内容
 		$info['copyFrom'] = $copyFrom;  // 文章来源
 		$info['author']   = $result[0]->author;  // 文章作者
 		$info['editor']   = $result[0]->editor;  // 文章责编
+		$info['time']     = date('Y-m-d H:i:s', $result2[0]->updatetime);  // 文章发布时间
 
-		var_dump($info);
 		$data['info'] = $info;
 		$this->load->view('article', $data);
 	}
