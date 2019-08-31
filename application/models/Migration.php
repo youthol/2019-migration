@@ -35,7 +35,7 @@ class Migration extends CI_Model
 	/**
 	 * @return mixed
 	 */
-	public function articleContent()
+	public function articleContent($id)
 	{
 //		根据文章id查取指定文章
 		$query = $this->db->get_where('news_data', array(
